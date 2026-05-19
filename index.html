@@ -297,6 +297,45 @@
       font-size: 0.9rem;
     }
 
+    /* Fullscreen button overlay */
+    .video-wrapper {
+      position: relative;
+      border-radius: 1rem;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .video-wrapper video {
+      border-radius: 1rem;
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: 0.3s;
+      z-index: 5;
+      font-family: 'Poppins', sans-serif;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(0, 229, 255, 0.3);
+      border-color: #00e5ff;
+    }
+    .video-wrapper:hover .fullscreen-btn {
+      opacity: 1;
+    }
+
     /* Shorts/Reels section - 9:16 grid layout */
     .shorts-grid {
       display: grid;
@@ -328,12 +367,20 @@
       overflow: hidden;
       background: #000;
       border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      cursor: pointer;
     }
     .short-video-wrapper video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 1rem;
+    }
+    .short-video-wrapper .fullscreen-btn {
+      bottom: 8px;
+      right: 8px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.8rem;
     }
     .short-label {
       font-weight: 600;
@@ -346,6 +393,17 @@
       font-size: 0.85rem;
       text-align: center;
       margin-top: 0.2rem;
+    }
+
+    /* Showreel fullscreen button */
+    .showreel-video-wrapper {
+      position: relative;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .showreel-video-wrapper video {
+      border-radius: 1.2rem;
     }
 
     /* About & Contact */
@@ -427,9 +485,12 @@
     <section id="showreel" style="margin: 5rem 0;">
       <h2 class="section-title"><span>Showreel</span></h2>
       <div class="showreel-frame">
-        <video muted loop playsinline controls preload="metadata">
-          <source src="assets/showreel.mp4" type="video/mp4">
-        </video>
+        <div class="showreel-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+          <video muted loop playsinline controls preload="metadata">
+            <source src="assets/showreel.mp4" type="video/mp4">
+          </video>
+          <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+        </div>
       </div>
     </section>
 
@@ -438,65 +499,92 @@
       <h2 class="section-title"><span>Featured Work</span></h2>
       <div class="video-grid">
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-1.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-1.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Urban Drift</div>
           <div class="video-desc">Cinematic color grade & rhythm.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-2.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-2.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Liquid Motion</div>
           <div class="video-desc">Experimental transitions.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-3.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-3.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Neon Nights</div>
           <div class="video-desc">Cyberpunk aesthetic reel.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-4.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-4.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Golden Hour</div>
           <div class="video-desc">Warm tones & smooth cuts.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-5.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-5.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Velocity</div>
           <div class="video-desc">Fast-paced action edit.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-6.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-6.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Monochrome</div>
           <div class="video-desc">B&W cinematic storytelling.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-7.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-7.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Retro Wave</div>
           <div class="video-desc">80s synthwave vibes.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-8.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-8.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Slow Burn</div>
           <div class="video-desc">Dreamy slow-motion edit.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata">
-            <source src="assets/featured-9.mp4" type="video/mp4">
-          </video>
+          <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/featured-9.mp4" type="video/mp4">
+            </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
+          </div>
           <div class="video-title">Afterglow</div>
           <div class="video-desc">Vibrant color pop transitions.</div>
         </div>
@@ -508,55 +596,61 @@
       <h2 class="section-title"><span>Shorts & Reels</span></h2>
       <div class="shorts-grid">
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-1.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel One</div>
           <div class="short-desc">Quick transition edit.</div>
         </div>
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-2.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel Two</div>
           <div class="short-desc">Trendy beat sync.</div>
         </div>
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-3.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel Three</div>
           <div class="short-desc">Slow-mo vibes.</div>
         </div>
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-4.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel Four</div>
           <div class="short-desc">Color pop edits.</div>
         </div>
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-5.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel Five</div>
           <div class="short-desc">Cinematic B-roll.</div>
         </div>
         <div class="short-card">
-          <div class="short-video-wrapper">
+          <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
             <video muted loop playsinline preload="metadata">
               <source src="assets/short-6.mp4" type="video/mp4">
             </video>
+            <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
           <div class="short-label">Reel Six</div>
           <div class="short-desc">Glitch & rhythm.</div>
@@ -596,6 +690,18 @@
   </main>
 
   <script>
+    // Fullscreen function
+    function openFullscreen(video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+      video.play().catch(() => {});
+    }
+
     (function() {
       // Hover play/pause for all videos
       const videos = document.querySelectorAll('video');
