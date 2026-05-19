@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -298,51 +297,55 @@
       font-size: 0.9rem;
     }
 
-    /* Shorts/Reels section - special layout */
-    .shorts-layout {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
+    /* Shorts/Reels section - 9:16 grid layout */
+    .shorts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 1rem;
     }
-    .shorts-column {
+    .short-card {
+      background: rgba(18, 18, 22, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255,255,255,0.05);
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      flex: 1;
-      min-width: 100px;
+      align-items: center;
     }
-    .short-item {
-      aspect-ratio: 9 / 16;
-      max-height: 280px;
+    .short-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.35);
+      border-color: #ff6b2b;
+    }
+    .short-video-wrapper {
       width: 100%;
-      border-radius: 1.2rem;
+      max-width: 320px;
+      aspect-ratio: 9 / 16;
+      border-radius: 1rem;
       overflow: hidden;
       background: #000;
       border: 1px solid rgba(255,255,255,0.1);
-      transition: 0.3s;
     }
-    .short-item video {
+    .short-video-wrapper video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 1.2rem;
+      border-radius: 1rem;
     }
-    .center-main-video {
-      flex: 2;
-      min-width: 300px;
-      max-width: 600px;
-      aspect-ratio: 16/9;
-      border-radius: 1.5rem;
-      overflow: hidden;
-      border: 2px solid rgba(0, 229, 255, 0.5);
-      box-shadow: 0 0 40px rgba(0,229,255,0.3);
+    .short-label {
+      font-weight: 600;
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+      text-align: center;
     }
-    .center-main-video video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .short-desc {
+      color: #ccc;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 0.2rem;
     }
 
     /* About & Contact */
@@ -381,22 +384,18 @@
       .hero-right {
         text-align: center;
       }
-      .shorts-layout {
-        flex-direction: column;
+      .shorts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
       }
-      .shorts-column {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+    }
+
+    @media (max-width: 480px) {
+      .shorts-grid {
+        grid-template-columns: 1fr;
       }
-      .short-item {
-        width: 30%;
-        min-width: 90px;
-        aspect-ratio: 9/16;
-      }
-      .center-main-video {
-        width: 100%;
-        max-width: 100%;
+      .short-video-wrapper {
+        max-width: 280px;
       }
     }
   </style>
@@ -411,7 +410,7 @@
     <section class="hero">
       <div class="hero-grid">
         <div class="hero-left">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23222' stroke='%2300e5ff' stroke-width='2'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='16' font-family='Poppins'%3EGRA%3C/text%3E%3C/svg%3E" alt="GRA_EDITZ Profile" class="profile-pic">
+          <img src="assets/profile-pic.jpg" alt="GRA_EDITZ Profile" class="profile-pic">
         </div>
         <div class="hero-right">
           <h1 class="brand-name logo-font">GRA_EDITZ</h1>
@@ -424,60 +423,143 @@
       </div>
     </section>
 
-    <!-- SHOWREEL -->
+    <!-- SHOWREEL (1 video) -->
     <section id="showreel" style="margin: 5rem 0;">
       <h2 class="section-title"><span>Showreel</span></h2>
       <div class="showreel-frame">
-        <video muted loop playsinline controls preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' fill='%23111'%3E%3Crect width='800' height='450'/%3E%3Ctext x='400' y='235' text-anchor='middle' fill='%23555' font-size='24'%3EShowreel%3C/text%3E%3C/svg%3E">
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-connection-1688-large.mp4" type="video/mp4">
+        <video muted loop playsinline controls preload="metadata">
+          <source src="assets/showreel.mp4" type="video/mp4">
         </video>
       </div>
     </section>
 
-    <!-- FEATURED VIDEOS -->
+    <!-- FEATURED VIDEOS (9 videos, 16:9) -->
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>Featured Work</span></h2>
       <div class="video-grid">
         <div class="video-card">
-          <video muted loop playsinline preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' fill='%23111'%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%23555'%3ECinematic%3C/text%3E%3C/svg%3E">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-1.mp4" type="video/mp4">
           </video>
           <div class="video-title">Urban Drift</div>
           <div class="video-desc">Cinematic color grade & rhythm.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' fill='%23111'%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%23555'%3EMotion%3C/text%3E%3C/svg%3E">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-2.mp4" type="video/mp4">
           </video>
           <div class="video-title">Liquid Motion</div>
           <div class="video-desc">Experimental transitions.</div>
         </div>
         <div class="video-card">
-          <video muted loop playsinline preload="metadata" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' fill='%23111'%3E%3Ctext x='200' y='120' text-anchor='middle' fill='%23555'%3ENeon%3C/text%3E%3C/svg%3E">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-5016-large.mp4" type="video/mp4">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-3.mp4" type="video/mp4">
           </video>
           <div class="video-title">Neon Nights</div>
           <div class="video-desc">Cyberpunk aesthetic reel.</div>
         </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-4.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Golden Hour</div>
+          <div class="video-desc">Warm tones & smooth cuts.</div>
+        </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-5.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Velocity</div>
+          <div class="video-desc">Fast-paced action edit.</div>
+        </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-6.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Monochrome</div>
+          <div class="video-desc">B&W cinematic storytelling.</div>
+        </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-7.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Retro Wave</div>
+          <div class="video-desc">80s synthwave vibes.</div>
+        </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-8.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Slow Burn</div>
+          <div class="video-desc">Dreamy slow-motion edit.</div>
+        </div>
+        <div class="video-card">
+          <video muted loop playsinline preload="metadata">
+            <source src="assets/featured-9.mp4" type="video/mp4">
+          </video>
+          <div class="video-title">Afterglow</div>
+          <div class="video-desc">Vibrant color pop transitions.</div>
+        </div>
       </div>
     </section>
 
-    <!-- SHORTS / REELS SECTION with fixed frame -->
+    <!-- SHORTS & REELS (6 videos, 9:16, no center video) -->
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>Shorts & Reels</span></h2>
-      <div class="shorts-layout">
-        <div class="shorts-column">
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-1232-large.mp4"></video></div>
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-woman-talking-on-a-video-call-4227-large.mp4"></video></div>
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-closeup-of-a-woman-with-colorful-makeup-39821-large.mp4"></video></div>
+      <div class="shorts-grid">
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel One</div>
+          <div class="short-desc">Quick transition edit.</div>
         </div>
-        <div class="center-main-video">
-          <video muted loop playsinline controls preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-connection-1688-large.mp4"></video>
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel Two</div>
+          <div class="short-desc">Trendy beat sync.</div>
         </div>
-        <div class="shorts-column">
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-5016-large.mp4"></video></div>
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4"></video></div>
-          <div class="short-item"><video muted loop playsinline preload="metadata" src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4"></video></div>
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel Three</div>
+          <div class="short-desc">Slow-mo vibes.</div>
+        </div>
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-4.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel Four</div>
+          <div class="short-desc">Color pop edits.</div>
+        </div>
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-5.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel Five</div>
+          <div class="short-desc">Cinematic B-roll.</div>
+        </div>
+        <div class="short-card">
+          <div class="short-video-wrapper">
+            <video muted loop playsinline preload="metadata">
+              <source src="assets/short-6.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="short-label">Reel Six</div>
+          <div class="short-desc">Glitch & rhythm.</div>
         </div>
       </div>
     </section>
@@ -486,7 +568,7 @@
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>About</span></h2>
       <div class="about-text glass-card">
-        “I’m fortunate to turn creativity into my profession — crafting motion-driven visuals that transform ideas into engaging digital experiences.”
+        "I'm fortunate to turn creativity into my profession — crafting motion-driven visuals that transform ideas into engaging digital experiences."
       </div>
     </section>
 
@@ -507,7 +589,7 @@
 
     <!-- FINAL CTA -->
     <section class="cta-section">
-      <h2 style="font-size:2.2rem; font-weight:500;">Let’s Create Something Cinematic Together</h2>
+      <h2 style="font-size:2.2rem; font-weight:500;">Let's Create Something Cinematic Together</h2>
       <p style="margin:1.2rem 0 2rem; color:#ccc;">Freelance availability for motion design & editing.</p>
       <a href="https://wa.me/923143576406" target="_blank" class="btn btn-primary" style="font-size:1.2rem; padding:1rem 3rem;">Hire Me</a>
     </section>
@@ -546,7 +628,7 @@
       });
 
       // Subtle reveal animation on scroll (very light)
-      const revealElements = document.querySelectorAll('.glass-card, .showreel-frame, .video-card, .short-item, .center-main-video');
+      const revealElements = document.querySelectorAll('.glass-card, .showreel-frame, .video-card, .short-card');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -576,4 +658,3 @@
   </script>
 </body>
 </html>
-```
