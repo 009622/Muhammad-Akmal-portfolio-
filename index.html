@@ -4,458 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>GRA_EDITZ | Cinematic Video Editor</title>
-  <!-- Fonts: Orbitron for logo, Poppins for body -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: #0a0a0c;
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    /* Cinematic background with blurred image and moving glow blobs */
-    .bg-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="%23050505"/><defs><filter id="blur"><feGaussianBlur stdDeviation="150"/></filter></defs><circle cx="300" cy="200" r="400" fill="%2300e5ff" opacity="0.08" filter="url(%23blur)"/><circle cx="1600" cy="800" r="450" fill="%23ff6b2b" opacity="0.07" filter="url(%23blur)"/></svg>');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    /* Floating animated blobs */
-    .glow-blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      z-index: -1;
-      opacity: 0.25;
-      pointer-events: none;
-    }
-    .blob-left {
-      width: 60vw;
-      height: 60vw;
-      max-width: 800px;
-      max-height: 800px;
-      background: #00e5ff;
-      top: -10%;
-      left: -15%;
-      animation: slowBlobLeft 18s infinite alternate ease-in-out;
-    }
-    .blob-right {
-      width: 55vw;
-      height: 55vw;
-      max-width: 700px;
-      max-height: 700px;
-      background: #ff6b2b;
-      bottom: -10%;
-      right: -10%;
-      animation: slowBlobRight 20s infinite alternate ease-in-out;
-    }
-
-    @keyframes slowBlobLeft {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(8%, 5%) scale(1.1); }
-    }
-    @keyframes slowBlobRight {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(-7%, -6%) scale(1.08); }
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Typography */
-    h1, h2, h3 {
-      font-weight: 600;
-    }
-    .logo-font {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      letter-spacing: 2px;
-    }
-
-    /* Glassmorphism card */
-    .glass-card {
-      background: rgba(20, 20, 24, 0.5);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      transition: all 0.3s ease;
-    }
-    .glass-card:hover {
-      border-color: rgba(0, 229, 255, 0.25);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.8rem 2.2rem;
-      border-radius: 3rem;
-      font-weight: 500;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-      text-decoration: none;
-      transition: 0.3s ease;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #00e5ff, #ff6b2b);
-      box-shadow: 0 8px 22px rgba(0, 229, 255, 0.3);
-      color: #0a0a0c;
-      font-weight: 600;
-    }
-    .btn-primary:hover {
-      box-shadow: 0 12px 28px rgba(255, 107, 43, 0.5);
-      transform: translateY(-2px);
-    }
-    .btn-glass {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-    }
-    .btn-glass:hover {
-      background: rgba(0, 229, 255, 0.1);
-      border-color: #00e5ff;
-      box-shadow: 0 0 20px rgba(0,229,255,0.3);
-    }
-
-    /* Hero section */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 0;
-    }
-    .hero-grid {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 3rem;
-      width: 100%;
-    }
-    .hero-left {
-      flex: 1 1 280px;
-      display: flex;
-      justify-content: center;
-    }
-    .profile-pic {
-      width: 260px;
-      height: 260px;
-      max-width: 70vw;
-      max-height: 70vw;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid rgba(0, 229, 255, 0.5);
-      box-shadow: 0 0 50px rgba(0, 229, 255, 0.4);
-      animation: floatProfile 5s infinite ease-in-out;
-      background: #1e1e24;
-    }
-    @keyframes floatProfile {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-      100% { transform: translateY(0px); }
-    }
-
-    .hero-right {
-      flex: 1 1 400px;
-      text-align: left;
-    }
-    .brand-name {
-      font-size: clamp(3rem, 10vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      background: linear-gradient(to right, #fff, #ccc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .tagline {
-      font-size: 1.5rem;
-      font-weight: 300;
-      margin-top: 0.5rem;
-      position: relative;
-      display: inline-block;
-    }
-    .tagline::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -6px;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, #00e5ff, #ff6b2b);
-      box-shadow: 0 0 15px #00e5ff;
-    }
-    .hero-buttons {
-      margin-top: 2.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-    }
-
-    /* Section titles */
-    .section-title {
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 2.5rem;
-      letter-spacing: 1px;
-      position: relative;
-      display: inline-block;
-    }
-    .section-title span {
-      background: linear-gradient(135deg, #00e5ff, #ff6b2b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* Showreel frame */
-    .showreel-frame {
-      border-radius: 1.8rem;
-      padding: 10px;
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.4);
-      box-shadow: 0 0 35px rgba(0, 229, 255, 0.2);
-      transition: 0.4s;
-    }
-    .showreel-frame:hover {
-      box-shadow: 0 0 55px rgba(255, 107, 43, 0.5);
-      border-color: #ff6b2b;
-    }
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 1.2rem;
-      background: #000;
-    }
-
-    /* Featured grid */
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-    .video-card {
-      background: rgba(18, 18, 22, 0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 1.5rem;
-      padding: 1rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    .video-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.35);
-      border-color: #ff6b2b;
-    }
-    .video-card video {
-      border-radius: 1rem;
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-    }
-    .video-title {
-      font-weight: 600;
-      margin: 0.8rem 0 0.3rem;
-      font-size: 1.3rem;
-    }
-    .video-desc {
-      color: #ccc;
-      font-size: 0.9rem;
-    }
-
-    /* Fullscreen button overlay */
-    .video-wrapper {
-      position: relative;
-      border-radius: 1rem;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .video-wrapper video {
-      border-radius: 1rem;
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-    }
-    .fullscreen-btn {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 0.5rem;
-      padding: 0.4rem 0.7rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      transition: 0.3s;
-      z-index: 5;
-      font-family: 'Poppins', sans-serif;
-    }
-    .fullscreen-btn:hover {
-      background: rgba(0, 229, 255, 0.3);
-      border-color: #00e5ff;
-    }
-    .video-wrapper:hover .fullscreen-btn {
-      opacity: 1;
-    }
-
-    /* Shorts/Reels section - 9:16 grid layout */
-    .shorts-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin-top: 1rem;
-    }
-    .short-card {
-      background: rgba(18, 18, 22, 0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 1.5rem;
-      padding: 1rem;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .short-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.35);
-      border-color: #ff6b2b;
-    }
-    .short-video-wrapper {
-      width: 100%;
-      max-width: 320px;
-      aspect-ratio: 9 / 16;
-      border-radius: 1rem;
-      overflow: hidden;
-      background: #000;
-      border: 1px solid rgba(255,255,255,0.1);
-      position: relative;
-      cursor: pointer;
-    }
-    .short-video-wrapper video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 1rem;
-    }
-    .short-video-wrapper .fullscreen-btn {
-      bottom: 8px;
-      right: 8px;
-      padding: 0.35rem 0.6rem;
-      font-size: 0.8rem;
-    }
-    .short-label {
-      font-weight: 600;
-      margin-top: 0.8rem;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-    .short-desc {
-      color: #ccc;
-      font-size: 0.85rem;
-      text-align: center;
-      margin-top: 0.2rem;
-    }
-
-    /* Showreel fullscreen button */
-    .showreel-video-wrapper {
-      position: relative;
-      border-radius: 1.2rem;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .showreel-video-wrapper video {
-      border-radius: 1.2rem;
-    }
-
-    /* About & Contact */
-    .about-text {
-      font-size: 1.3rem;
-      max-width: 800px;
-      margin: 0 auto;
-      font-weight: 300;
-      text-align: center;
-      background: rgba(0,0,0,0.4);
-      padding: 2rem;
-      border-radius: 2rem;
-      backdrop-filter: blur(10px);
-    }
-    .contact-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .contact-item {
-      padding: 1.8rem 2.5rem;
-      text-align: center;
-      min-width: 220px;
-    }
-    .cta-section {
-      text-align: center;
-      padding: 4rem 0;
-    }
-
-    @media (max-width: 768px) {
-      .hero-grid {
-        flex-direction: column;
-        text-align: center;
-      }
-      .hero-right {
-        text-align: center;
-      }
-      .shorts-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .shorts-grid {
-        grid-template-columns: 1fr;
-      }
-      .short-video-wrapper {
-        max-width: 280px;
-      }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #0a0a0c; font-family: 'Poppins', sans-serif; color: #fff; line-height: 1.5; overflow-x: hidden; }
+    .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="%23050505"/><defs><filter id="blur"><feGaussianBlur stdDeviation="150"/></filter></defs><circle cx="300" cy="200" r="400" fill="%2300e5ff" opacity="0.08" filter="url(%23blur)"/><circle cx="1600" cy="800" r="450" fill="%23ff6b2b" opacity="0.07" filter="url(%23blur)"/></svg>'); background-size: cover; background-position: center; background-repeat: no-repeat; }
+    .glow-blob { position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.25; pointer-events: none; }
+    .blob-left { width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; background: #00e5ff; top: -10%; left: -15%; animation: slowBlobLeft 18s infinite alternate ease-in-out; }
+    .blob-right { width: 55vw; height: 55vw; max-width: 700px; max-height: 700px; background: #ff6b2b; bottom: -10%; right: -10%; animation: slowBlobRight 20s infinite alternate ease-in-out; }
+    @keyframes slowBlobLeft { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(8%, 5%) scale(1.1); } }
+    @keyframes slowBlobRight { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-7%, -6%) scale(1.08); } }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+    h1, h2, h3 { font-weight: 600; }
+    .logo-font { font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 2px; }
+    .glass-card { background: rgba(20, 20, 24, 0.5); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transition: all 0.3s ease; }
+    .glass-card:hover { border-color: rgba(0, 229, 255, 0.25); box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.8rem 2.2rem; border-radius: 3rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.5px; text-decoration: none; transition: 0.3s ease; cursor: pointer; border: none; background: transparent; color: white; font-family: 'Poppins', sans-serif; }
+    .btn-primary { background: linear-gradient(135deg, #00e5ff, #ff6b2b); box-shadow: 0 8px 22px rgba(0, 229, 255, 0.3); color: #0a0a0c; font-weight: 600; }
+    .btn-primary:hover { box-shadow: 0 12px 28px rgba(255, 107, 43, 0.5); transform: translateY(-2px); }
+    .btn-glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; }
+    .btn-glass:hover { background: rgba(0, 229, 255, 0.1); border-color: #00e5ff; box-shadow: 0 0 20px rgba(0,229,255,0.3); }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0; }
+    .hero-grid { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 3rem; width: 100%; }
+    .hero-left { flex: 1 1 280px; display: flex; justify-content: center; }
+    .profile-pic { width: 260px; height: 260px; max-width: 70vw; max-height: 70vw; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0, 229, 255, 0.5); box-shadow: 0 0 50px rgba(0, 229, 255, 0.4); animation: floatProfile 5s infinite ease-in-out; background: #1e1e24; }
+    @keyframes floatProfile { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0px); } }
+    .hero-right { flex: 1 1 400px; text-align: left; }
+    .brand-name { font-size: clamp(3rem, 10vw, 5.5rem); font-weight: 800; line-height: 1.1; background: linear-gradient(to right, #fff, #ccc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tagline { font-size: 1.5rem; font-weight: 300; margin-top: 0.5rem; position: relative; display: inline-block; }
+    .tagline::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 100%; height: 2px; background: linear-gradient(90deg, #00e5ff, #ff6b2b); box-shadow: 0 0 15px #00e5ff; }
+    .hero-buttons { margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 1.2rem; }
+    .section-title { font-size: 2.5rem; font-weight: 600; margin-bottom: 2.5rem; letter-spacing: 1px; position: relative; display: inline-block; }
+    .section-title span { background: linear-gradient(135deg, #00e5ff, #ff6b2b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .showreel-frame { border-radius: 1.8rem; padding: 10px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.4); box-shadow: 0 0 35px rgba(0, 229, 255, 0.2); transition: 0.4s; }
+    .showreel-frame:hover { box-shadow: 0 0 55px rgba(255, 107, 43, 0.5); border-color: #ff6b2b; }
+    video { width: 100%; height: auto; display: block; border-radius: 1.2rem; background: #000; }
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1rem; }
+    .video-card { background: rgba(18, 18, 22, 0.6); backdrop-filter: blur(12px); border-radius: 1.5rem; padding: 1rem; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+    .video-card:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 229, 255, 0.35); border-color: #ff6b2b; }
+    .video-card video { border-radius: 1rem; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .video-title { font-weight: 600; margin: 0.8rem 0 0.3rem; font-size: 1.15rem; }
+    .video-desc { color: #ccc; font-size: 0.88rem; line-height: 1.5; }
+    .video-tag { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.75rem; border-radius: 2rem; font-size: 0.72rem; font-weight: 500; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00e5ff; }
+    .video-wrapper { position: relative; border-radius: 1rem; overflow: hidden; cursor: pointer; }
+    .video-wrapper video { border-radius: 1rem; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .fullscreen-btn { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 0.5rem; padding: 0.4rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; transition: 0.3s; z-index: 5; font-family: 'Poppins', sans-serif; }
+    .fullscreen-btn:hover { background: rgba(0, 229, 255, 0.3); border-color: #00e5ff; }
+    .shorts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1rem; }
+    .short-card { background: rgba(18, 18, 22, 0.6); backdrop-filter: blur(12px); border-radius: 1.5rem; padding: 1rem; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; }
+    .short-card:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 229, 255, 0.35); border-color: #ff6b2b; }
+    .short-video-wrapper { width: 100%; max-width: 320px; aspect-ratio: 9 / 16; border-radius: 1rem; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1); position: relative; cursor: pointer; }
+    .short-video-wrapper video { width: 100%; height: 100%; object-fit: cover; border-radius: 1rem; }
+    .short-video-wrapper .fullscreen-btn { bottom: 8px; right: 8px; padding: 0.35rem 0.6rem; font-size: 0.8rem; }
+    .short-label { font-weight: 600; margin-top: 0.8rem; font-size: 1.05rem; text-align: center; }
+    .short-desc { color: #ccc; font-size: 0.82rem; text-align: center; margin-top: 0.2rem; }
+    .showreel-video-wrapper { position: relative; border-radius: 1.2rem; overflow: hidden; cursor: pointer; }
+    .showreel-video-wrapper video { border-radius: 1.2rem; }
+    .stats-row { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin: 0 0 3rem; }
+    .stat-box { text-align: center; padding: 1.5rem 2.5rem; min-width: 140px; }
+    .stat-number { font-size: 2.2rem; font-weight: 700; background: linear-gradient(135deg, #00e5ff, #ff6b2b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.8rem; color: #aaa; margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .about-text { font-size: 1.15rem; max-width: 800px; margin: 0 auto; font-weight: 300; text-align: center; background: rgba(0,0,0,0.4); padding: 2.5rem; border-radius: 2rem; backdrop-filter: blur(10px); line-height: 1.8; }
+    .contact-cards { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+    .contact-item { padding: 1.8rem 2.5rem; text-align: center; min-width: 220px; }
+    .cta-section { text-align: center; padding: 4rem 0; }
+    @media (max-width: 768px) { .hero-grid { flex-direction: column; text-align: center; } .hero-right { text-align: center; } .shorts-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
+    @media (max-width: 480px) { .shorts-grid { grid-template-columns: 1fr; } .short-video-wrapper { max-width: 280px; } }
   </style>
 </head>
 <body>
@@ -464,6 +80,7 @@
   <div class="glow-blob blob-right"></div>
 
   <main class="container">
+
     <!-- HERO -->
     <section class="hero">
       <div class="hero-grid">
@@ -472,7 +89,7 @@
         </div>
         <div class="hero-right">
           <h1 class="brand-name logo-font">GRA_EDITZ</h1>
-          <p class="tagline">Turning Ideas Into Motion</p>
+          <p class="tagline">Senior Video Editor · Motion Graphics Specialist</p>
           <div class="hero-buttons">
             <a href="https://wa.me/923143576406" target="_blank" class="btn btn-primary">Hire Me</a>
             <a href="#showreel" class="btn btn-glass">▶ Watch Showreel</a>
@@ -481,7 +98,29 @@
       </div>
     </section>
 
-    <!-- SHOWREEL (1 video) -->
+    <!-- STATS -->
+    <section style="margin: 0 0 5rem;">
+      <div class="stats-row">
+        <div class="glass-card stat-box">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Videos Delivered</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number">10M+</div>
+          <div class="stat-label">Total Views Generated</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="glass-card stat-box">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">International Clients</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOWREEL -->
     <section id="showreel" style="margin: 5rem 0;">
       <h2 class="section-title"><span>Showreel</span></h2>
       <div class="showreel-frame">
@@ -494,166 +133,155 @@
       </div>
     </section>
 
-    <!-- FEATURED VIDEOS (9 videos, 16:9) -->
+    <!-- FEATURED VIDEOS -->
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>Featured Work</span></h2>
       <div class="video-grid">
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-1.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-1.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Urban Drift</div>
-          <div class="video-desc">Cinematic color grade & rhythm.</div>
+          <div class="video-title">Documentary Long-Form Edit</div>
+          <div class="video-desc">Full edit for a US-based history channel — multi-cam workflow, professional color grade and sound mix in Premiere Pro.</div>
+          <span class="video-tag">YouTube · Documentary</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-2.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-2.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Liquid Motion</div>
-          <div class="video-desc">Experimental transitions.</div>
+          <div class="video-title">Motion Graphics Package</div>
+          <div class="video-desc">Custom animated lower thirds, title sequences, and typography — built in After Effects for a UK marketing agency.</div>
+          <span class="video-tag">After Effects · Branding</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-3.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-3.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Neon Nights</div>
-          <div class="video-desc">Cyberpunk aesthetic reel.</div>
+          <div class="video-title">YouTube Automation — CashCow</div>
+          <div class="video-desc">Faceless channel content — script to delivery with voiceover sync, B-roll, and motion overlays for a 500K+ subscriber US channel.</div>
+          <span class="video-tag">YT Automation · US Channel</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-4.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-4.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Golden Hour</div>
-          <div class="video-desc">Warm tones & smooth cuts.</div>
+          <div class="video-title">Cinematic Color Grade</div>
+          <div class="video-desc">Professional color grading and sound design for branded content — warm tones with precision cut edits in DaVinci Resolve.</div>
+          <span class="video-tag">DaVinci · Color Grade</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-5.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-5.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Velocity</div>
-          <div class="video-desc">Fast-paced action edit.</div>
+          <div class="video-title">Action & Promo Edit</div>
+          <div class="video-desc">Fast-paced promo reel with beat-synced cuts and VFX compositing — delivered within 48 hours for a European client.</div>
+          <span class="video-tag">Premiere Pro · VFX</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-6.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-6.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Monochrome</div>
-          <div class="video-desc">B&W cinematic storytelling.</div>
+          <div class="video-title">Corporate Documentary</div>
+          <div class="video-desc">Short documentary for a corporate client — visual storytelling aligned with brand guidelines and broadcast standards.</div>
+          <span class="video-tag">Corporate · Documentary</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-7.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-7.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Retro Wave</div>
-          <div class="video-desc">80s synthwave vibes.</div>
+          <div class="video-title">Explainer — Animated Typography</div>
+          <div class="video-desc">Educational explainer with kinetic typography and animated diagrams — produced for a US-based online course brand.</div>
+          <span class="video-tag">After Effects · Education</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-8.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-8.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Slow Burn</div>
-          <div class="video-desc">Dreamy slow-motion edit.</div>
+          <div class="video-title">Slow Motion Cinematic</div>
+          <div class="video-desc">Dreamy slow-mo edit with precise audio design and smooth color transitions — delivered for a lifestyle YouTube channel.</div>
+          <span class="video-tag">Cinematic · YouTube</span>
         </div>
+
         <div class="video-card">
           <div class="video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/featured-9.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/featured-9.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶ Fullscreen</button>
           </div>
-          <div class="video-title">Afterglow</div>
-          <div class="video-desc">Vibrant color pop transitions.</div>
+          <div class="video-title">Green Screen & VFX Composite</div>
+          <div class="video-desc">Green screen keying with layered VFX compositing — produced for a UK entertainment channel to elevate production value.</div>
+          <span class="video-tag">VFX · Green Screen</span>
         </div>
+
       </div>
     </section>
 
-    <!-- SHORTS & REELS (6 videos, 9:16, no center video) -->
+    <!-- SHORTS & REELS -->
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>Shorts & Reels</span></h2>
       <div class="shorts-grid">
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-1.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-1.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel One</div>
-          <div class="short-desc">Quick transition edit.</div>
+          <div class="short-label">Transition Reel</div>
+          <div class="short-desc">Fast-cut transitions for Instagram — 24hr turnaround.</div>
         </div>
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-2.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-2.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel Two</div>
-          <div class="short-desc">Trendy beat sync.</div>
+          <div class="short-label">Beat Sync Edit</div>
+          <div class="short-desc">Music-synced cuts for a brand campaign reel.</div>
         </div>
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-3.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-3.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel Three</div>
-          <div class="short-desc">Slow-mo vibes.</div>
+          <div class="short-label">Slow-Mo Product Reel</div>
+          <div class="short-desc">Slow motion product showcase for a US e-commerce brand.</div>
         </div>
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-4.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-4.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel Four</div>
-          <div class="short-desc">Color pop edits.</div>
+          <div class="short-label">Color Pop Short</div>
+          <div class="short-desc">Vibrant color grade edit for a TikTok/Reels campaign.</div>
         </div>
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-5.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-5.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel Five</div>
-          <div class="short-desc">Cinematic B-roll.</div>
+          <div class="short-label">Cinematic B-Roll</div>
+          <div class="short-desc">B-roll compilation with cinematic grade for a travel channel.</div>
         </div>
         <div class="short-card">
           <div class="short-video-wrapper" onclick="openFullscreen(this.querySelector('video'))">
-            <video muted loop playsinline preload="metadata">
-              <source src="assets/short-6.mp4" type="video/mp4">
-            </video>
+            <video muted loop playsinline preload="metadata"><source src="assets/short-6.mp4" type="video/mp4"></video>
             <button class="fullscreen-btn" onclick="event.stopPropagation(); openFullscreen(this.parentElement.querySelector('video'))">⛶</button>
           </div>
-          <div class="short-label">Reel Six</div>
-          <div class="short-desc">Glitch & rhythm.</div>
+          <div class="short-label">Glitch Effect Reel</div>
+          <div class="short-desc">Glitch transitions and rhythm edits for a music artist promo.</div>
         </div>
       </div>
     </section>
@@ -662,7 +290,7 @@
     <section style="margin: 5rem 0;">
       <h2 class="section-title"><span>About</span></h2>
       <div class="about-text glass-card">
-        "I'm fortunate to turn creativity into my profession — crafting motion-driven visuals that transform ideas into engaging digital experiences."
+        "Senior Video Editor with 5+ years delivering broadcast-quality content for US, UK, and European clients. Specializing in YouTube long-form, motion graphics, and documentary filmmaking — 200+ videos produced, 10M+ total views generated for international channels."
       </div>
     </section>
 
@@ -684,80 +312,49 @@
     <!-- FINAL CTA -->
     <section class="cta-section">
       <h2 style="font-size:2.2rem; font-weight:500;">Let's Create Something Cinematic Together</h2>
-      <p style="margin:1.2rem 0 2rem; color:#ccc;">Freelance availability for motion design & editing.</p>
+      <p style="margin:1.2rem 0 2rem; color:#ccc;">Available for remote freelance — YouTube, motion graphics, documentary & branded content.</p>
       <a href="https://wa.me/923143576406" target="_blank" class="btn btn-primary" style="font-size:1.2rem; padding:1rem 3rem;">Hire Me</a>
     </section>
+
   </main>
 
   <script>
-    // Fullscreen function
     function openFullscreen(video) {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        video.webkitRequestFullscreen();
-      } else if (video.msRequestFullscreen) {
-        video.msRequestFullscreen();
-      }
+      if (video.requestFullscreen) { video.requestFullscreen(); }
+      else if (video.webkitRequestFullscreen) { video.webkitRequestFullscreen(); }
+      else if (video.msRequestFullscreen) { video.msRequestFullscreen(); }
       video.play().catch(() => {});
     }
-
     (function() {
-      // Hover play/pause for all videos
       const videos = document.querySelectorAll('video');
       videos.forEach(video => {
-        video.addEventListener('mouseenter', function() {
-          if (video.paused) {
-            video.play().catch(() => {});
-          }
-        });
-        video.addEventListener('mouseleave', function() {
-          if (!video.paused) {
-            video.pause();
-          }
-        });
-        // Ensure muted for autoplay capability
+        video.addEventListener('mouseenter', function() { if (video.paused) video.play().catch(() => {}); });
+        video.addEventListener('mouseleave', function() { if (!video.paused) video.pause(); });
         video.muted = true;
       });
-
-      // Smooth scroll for anchor links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
           const href = this.getAttribute('href');
           if (href === "#") return;
           e.preventDefault();
           const target = document.querySelector(href);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
-
-      // Subtle reveal animation on scroll (very light)
-      const revealElements = document.querySelectorAll('.glass-card, .showreel-frame, .video-card, .short-card');
+      const revealElements = document.querySelectorAll('.glass-card, .showreel-frame, .video-card, .short-card, .stat-box');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-          }
+          if (entry.isIntersecting) { entry.target.style.opacity = 1; entry.target.style.transform = 'translateY(0)'; }
         });
       }, { threshold: 0.15 });
-
       revealElements.forEach(el => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(15px)';
+        el.style.opacity = 0; el.style.transform = 'translateY(15px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
       });
-
-      // Initial trigger for visible elements
       window.addEventListener('load', () => {
         revealElements.forEach(el => {
-          if (el.getBoundingClientRect().top < window.innerHeight) {
-            el.style.opacity = 1;
-            el.style.transform = 'translateY(0)';
-          }
+          if (el.getBoundingClientRect().top < window.innerHeight) { el.style.opacity = 1; el.style.transform = 'translateY(0)'; }
         });
       });
     })();
